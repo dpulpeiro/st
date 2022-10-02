@@ -5,8 +5,10 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font ="Meslo LG M for Powerline:style=Regular:size=12" ;
-static char *font2[] = { "JoyPixels:pixelsize=18:antialias=true:autohint=true" };
+
+static char *font = "mono:size=12:antialias=true:autohint=true";
+static char *font2[] = { "NotoColorEmoji:pixelsize=10:antialias=true:autohint=true" };
+
 static int borderpx = 2;
 
 /*
