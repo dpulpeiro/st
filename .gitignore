@@ -1,4 +1,5 @@
 patches/
+config.h
 .gitignore
 *.o
 st
