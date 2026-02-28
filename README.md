@@ -1,99 +1,123 @@
-# Luke's build of st - the simple (suckless) terminal
+# st - Simple Terminal
 
-The [suckless terminal (st)](https://st.suckless.org/) with some additional
-features that make it literally the best terminal emulator ever:
+Custom build of st with boxdraw, ligatures, transparency, scrollback, and URL handling patches.
 
-## Unique features (using dmenu)
+**Terminal mod key:** `Alt` (Mod1)
+**Terminal mod + Shift:** `Alt+Shift`
 
-+ **follow urls** by pressing `alt-l`
-+ **copy urls** in the same way with `alt-y`
-+ **copy the output of commands** with `alt-o`
+## Keyboard Shortcuts
 
-## Bindings for
+### Clipboard
 
-+ **scrollback** with `alt-↑/↓` or `alt-pageup/down` or `shift` while scrolling the
-  mouse.
-+ OR **vim-bindings**: scroll up/down in history with `alt-k` and `alt-j`.
-  Faster with `alt-u`/`alt-d`.
-+ **zoom/change font size**: same bindings as above, but holding down shift as
-  well. `alt-home` returns to default
-+ **copy text** with `alt-c`, **paste** is `alt-v` or `shift-insert`
+| Shortcut | Action |
+|---|---|
+| `Alt+c` | Copy to clipboard |
+| `Alt+v` | Paste from clipboard |
+| `Alt+Shift+C` | Copy to clipboard |
+| `Alt+Shift+V` | Paste from clipboard |
+| `Shift+Insert` | Paste from clipboard / selection |
 
-## Pretty stuff
+### Font Size (Zoom)
 
-+ Compatibility with `Xresources` and `pywal` for dynamic colors.
-+ Default [gruvbox](https://github.com/morhetz/gruvbox) colors otherwise.
-+ Transparency/alpha, which is also adjustable from your `Xresources`.
-+ Default font is system "mono" at 14pt, meaning the font will match your
-  system font.
+| Shortcut | Action |
+|---|---|
+| `Alt+Shift+PageUp` | Zoom in (+1) |
+| `Alt+Shift+PageDown` | Zoom out (-1) |
+| `Alt+Shift+Home` | Reset zoom |
+| `Alt+Shift+Up` | Zoom in (+1) |
+| `Alt+Shift+Down` | Zoom out (-1) |
+| `Alt+Shift+K` | Zoom in (+1) |
+| `Alt+Shift+J` | Zoom out (-1) |
+| `Alt+Shift+U` | Zoom in (+2) |
+| `Alt+Shift+D` | Zoom out (-2) |
 
-## Other st patches
+### Scrollback
 
-+ Boxdraw
-+ Ligatures
-+ font2
-+ updated to latest version 0.8.4
+| Shortcut | Action |
+|---|---|
+| `Shift+PageUp` | Scroll up (full page) |
+| `Shift+PageDown` | Scroll down (full page) |
+| `Alt+PageUp` | Scroll up (full page) |
+| `Alt+PageDown` | Scroll down (full page) |
+| `Alt+k` | Scroll up (1 line) |
+| `Alt+j` | Scroll down (1 line) |
+| `Alt+Up` | Scroll up (1 line) |
+| `Alt+Down` | Scroll down (1 line) |
+| `Alt+u` | Scroll up (full page) |
+| `Alt+d` | Scroll down (full page) |
 
-## Installation for newbs
+### Transparency
 
-You should have xlib header files and libharfbuzz build files installed.
+| Shortcut | Action |
+|---|---|
+| `Alt+a` | Increase opacity (+0.05) |
+| `Alt+s` | Decrease opacity (-0.05) |
+
+### External Pipes
+
+| Shortcut | Action |
+|---|---|
+| `Alt+l` | Open URL (st-urlhandler) |
+| `Alt+y` | Copy URL (st-urlhandler) |
+| `Alt+o` | Copy output (st-copyout) |
+
+### Printer
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl+PrintScreen` | Toggle printer |
+| `Shift+PrintScreen` | Print screen |
+| `PrintScreen` | Print selection |
+
+### Other
+
+| Shortcut | Action |
+|---|---|
+| `Break` | Send break |
+| `Alt+Shift+NumLock` | Toggle numlock |
+
+## Mouse Shortcuts
+
+| Button | Modifier | Action |
+|---|---|---|
+| Scroll Up | - | Scroll up (1 line) |
+| Scroll Down | - | Scroll down (1 line) |
+| Middle | - | Paste selection |
+| Scroll Up | Shift | Send Page Up |
+| Scroll Down | Shift | Send Page Down |
+
+## Selection
+
+Hold `Alt` while selecting for rectangular selection mode.
+
+## Configuration
+
+| Setting | Value |
+|---|---|
+| Font | JetBrains Mono NL Light, size 24 |
+| Alt font | NotoColorEmoji, size 24 |
+| Opacity | 0.8 (80%) |
+| Color scheme | Gruvbox Dark |
+| Cursor | Block |
+| Tabs | 8 spaces |
+| TERM | st-256color |
+| Boxdraw | Enabled |
+| Bell | Disabled |
+
+## Patches
+
+- **Boxdraw**: Pixel-perfect box drawing characters
+- **Ligatures**: Font ligature support (requires libharfbuzz)
+- **Alpha/Transparency**: Configurable background opacity
+- **Scrollback**: Keyboard and mouse scrollback
+- **Externalpipe**: Pipe terminal contents to external scripts
+- **font2**: Secondary font for emoji/special characters
+- Xresources support (pywal compatible)
+
+## Installation
 
 ```
-git clone https://github.com/LukeSmithxyz/st
-cd st
 sudo make install
 ```
 
-Obviously, `make` is required to build. `fontconfig` is required for the
-default build, since it asks `fontconfig` for your system monospace font. It
-might be obvious, but `libX11` and `libXft` are required as well. Chances are,
-you have all of this installed already.
-
-On OpenBSD, be sure to edit `config.mk` first and remove `-lrt` from the
-`$LIBS` before compiling.
-
-Be sure to have a composite manager (`xcompmgr`, `picom`, etc.) running if you
-want transparency.
-
-## How to configure dynamically with Xresources
-
-For many key variables, this build of `st` will look for X settings set in
-either `~/.Xdefaults` or `~/.Xresources`. You must run `xrdb` on one of these
-files to load the settings.
-
-For example, you can define your desired fonts, transparency or colors:
-
-```
-*.font:	Liberation Mono:pixelsize=12:antialias=true:autohint=true;
-*.alpha: 0.9
-*.color0: #111
-...
-```
-
-The `alpha` value (for transparency) goes from `0` (transparent) to `1`
-(opaque). There is an example `Xdefaults` file in this respository.
-
-### Colors
-
-To be clear about the color settings:
-
-- This build will use gruvbox colors by default and as a fallback.
-- If there are Xresources colors defined, those will take priority.
-- But if `wal` has run in your session, its colors will take priority.
-
-Note that when you run `wal`, it will negate the transparency of existing windows, but new windows will continue with the previously defined transparency.
-
-## Notes on Emojis and Special Characters
-
-If st crashes when viewing emojis, install
-[libxft-bgra](https://aur.archlinux.org/packages/libxft-bgra/) from the AUR.
-
-Note that some special characters may appear truncated if too wide. You might
-want to manually set your prefered emoji/special character font to a lower size
-in the `config.h` file to avoid this. By default, JoyPixels is used at a
-smaller size than the usual text.
-
-## Contact
-
-- Luke Smith <luke@lukesmith.xyz>
-- [https://lukesmith.xyz](https://lukesmith.xyz)
+Requires `libharfbuzz` for ligatures and a composite manager (`picom`, `xcompmgr`) for transparency.
